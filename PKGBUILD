@@ -1,4 +1,4 @@
-#Maintainer: burntcookie90
+#Maintainer: burntcookie90 <aur at vishnurajeevan dot com>
 
 _gitname=i3lock-fancy
 pkgname=i3lock-fancy-git
@@ -18,6 +18,13 @@ pkgver() {
   printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
+build() {
+    patch -N ${srcdir}/${_gitname}/lock ../package.patch
+}
 package() {
-    install -Dm 644 ${srcdir}/${_gitname}/lock ${_gitname}/usr/bin/i3lock-fancy
+    cd "${srcdir}/$_gitname"
+    install -Dm755 lock ${pkgdir}/usr/bin/i3lock-fancy
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    install -Dm644 lock.png ${pkgdir}/usr/share/${pkgname}/lock.png
+    install -Dm644 lockdark.png ${pkgdir}/usr/share/${pkgname}/lockdark.png
 }
